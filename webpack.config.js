@@ -1,24 +1,28 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-
-const htmlPlugin = new HtmlWebPackPlugin({
-    template: './src/index.html',
-    filename: './index.html'
-});
+const path = require("path");
 
 module.exports = {
-  mode: 'development',
+  entry: './src/index.tsx',
+  devtool: 'inline-source-map',
   module: {
-    rules: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      use: {
-          loader: 'babel-loader'
-        }
-      },
+    rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       }
-      ]},
-  plugins: [htmlPlugin]
+    ]
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js']
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      title: 'Cinema Website', template: './src/index.html'
+    })
+  ]
 };
